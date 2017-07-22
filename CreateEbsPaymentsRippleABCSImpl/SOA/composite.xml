@@ -15,6 +15,8 @@
           location="WSDLs/EbsPaymentsFtpGetAdapter.wsdl" importType="wsdl"/>
   <import namespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter"
           location="WSDLs/GetOriginatorPartyRestAdapter.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetRecipientPartRestAdapter"
+          location="WSDLs/GetRecipientPartyRestAdapter.wsdl" importType="wsdl"/>
   <service name="EbsPaymentsFtpGetAdapter" ui:wsdlLocation="WSDLs/EbsPaymentsFtpGetAdapter.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter#wsdl.interface(GetPaymentsFile_ptt)"/>
     <binding.jca config="Adapters/EbsPaymentsFtpGetAdapter_ftp.jca">
@@ -23,30 +25,43 @@
   </service>
   <property name="productVersion" type="xs:string" many="false">12.1.3.0.0</property>
   <property name="compositeID" type="xs:string" many="false">6b84ae82-fe66-4997-9ddd-7f0d5c4dc585</property>
-  <component name="CreateEbsPaymentsRipplieeABCSImpl" version="2.0">
-    <implementation.bpel src="BPEL/CreateEbsPaymentsRipplieeABCSImpl.bpel"/>
+  <component name="CreateEbsPaymentsRippleABCSImpl" version="2.0">
+    <implementation.bpel src="BPEL/CreateEbsPaymentsRippleABCSImpl.bpel"/>
     <componentType>
       <service name="EbsPaymentsFtpGetAdapter" ui:wsdlLocation="WSDLs/EbsPaymentsFtpGetAdapter.wsdl">
         <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter#wsdl.interface(GetPaymentsFile_ptt)"/>
       </service>
-      <reference name="GetRecipientPartyRestAdapter" ui:wsdlLocation="WSDLs/GetOriginatorPartyRestAdapter.wsdl">
+      <reference name="GetOriginatorPartyRestAdapter" ui:wsdlLocation="WSDLs/GetOriginatorPartyRestAdapter.wsdl">
         <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter#wsdl.interface(GetOriginatorPartyRestAdapter_ptt)"/>
+      </reference>
+      <reference name="GetRecipientPartyRestAdapter" ui:wsdlLocation="WSDLs/GetRecipientPartyRestAdapter.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetRecipientPartRestAdapter#wsdl.interface(GetRecipientPartRestAdapter_ptt)"/>
       </reference>
     </componentType>
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
     <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string" many="false">sync</property>
+    <property name="bpel.preference.originatorEmail" type="xs:string">ddbsit@usa.com</property>
   </component>
-  <reference name="GetRecipientPartyRestAdapter" ui:wsdlLocation="WSDLs/GetOriginatorPartyRestAdapter.wsdl">
+  <reference name="GetOriginatorPartyRestAdapter" ui:wsdlLocation="WSDLs/GetOriginatorPartyRestAdapter.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter#wsdl.interface(GetOriginatorPartyRestAdapter_ptt)"/>
     <binding.rest config="Adapters/GetOriginatorPartyRestAdapter.wadl"
                   location="http://sitweb.digitalbank.us/party-service/rest/us-en/banks/ddb"/>
   </reference>
+  <reference name="GetRecipientPartyRestAdapter" ui:wsdlLocation="WSDLs/GetRecipientPartyRestAdapter.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetRecipientPartRestAdapter#wsdl.interface(GetRecipientPartRestAdapter_ptt)"/>
+    <binding.rest config="Adapters/GetRecipientPartyRestAdapter.wadl"
+                  location="http://sitweb.digitalbank.us/party-service/rest/us-en/banks/dza/"/>
+  </reference>
   <wire>
     <source.uri>EbsPaymentsFtpGetAdapter</source.uri>
-    <target.uri>CreateEbsPaymentsRipplieeABCSImpl/EbsPaymentsFtpGetAdapter</target.uri>
+    <target.uri>CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter</target.uri>
   </wire>
   <wire>
-    <source.uri>CreateEbsPaymentsRipplieeABCSImpl/GetRecipientPartyRestAdapter</source.uri>
+    <source.uri>CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter</source.uri>
+    <target.uri>GetOriginatorPartyRestAdapter</target.uri>
+  </wire>
+  <wire>
+    <source.uri>CreateEbsPaymentsRippleABCSImpl/GetRecipientPartyRestAdapter</source.uri>
     <target.uri>GetRecipientPartyRestAdapter</target.uri>
   </wire>
 </composite>

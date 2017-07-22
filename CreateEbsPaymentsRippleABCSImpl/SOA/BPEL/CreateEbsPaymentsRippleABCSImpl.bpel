@@ -9,7 +9,7 @@
   Purpose: Empty BPEL Process
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -->
-<process name="CreateEbsPaymentsRipplieeABCSImpl"
+<process name="CreateEbsPaymentsRippleABCSImpl"
                targetNamespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/CreateEbsPaymentsRipplieeABCSImpl"
                xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
                xmlns:client="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/CreateEbsPaymentsRipplieeABCSImpl"
@@ -30,7 +30,8 @@
          xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
          xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
          xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
-         xmlns:ns5="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter">
+         xmlns:ns5="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter"
+         xmlns:ns6="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetRecipientPartRestAdapter">
 
   <!-- 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,35 +46,62 @@
   <partnerLinks>
     <partnerLink name="EbsPaymentsFtpGetAdapter" partnerLinkType="ns1:GetPaymentsFile_plt"
                  myRole="GetPaymentsFile_role"/>
-    <partnerLink name="GetRecipientPartyRestAdapter" partnerLinkType="ns5:GetOriginatorPartyRestAdapter"
+    <partnerLink name="GetOriginatorPartyRestAdapter" partnerLinkType="ns5:GetOriginatorPartyRestAdapter"
                  partnerRole="GetOriginatorPartyRestAdapterProvider"/>
+    <partnerLink name="GetRecipientPartyRestAdapter" partnerLinkType="ns6:GetRecipientPartRestAdapter"
+                 partnerRole="GetRecipientPartRestAdapterProvider"/>
   </partnerLinks>
   <variables>
     <variable name="gvarSupplierPayments" messageType="ns1:GetPaymentsFile_msg"/>
-    <variable name="gvarPartyEmail" messageType="ns5:getParty_inputMessage"/>
     <variable name="gvarOriginatorParty" messageType="ns5:getParty_outputMessage"/>
+    <variable name="gvarRecipientParty" messageType="ns6:getParty_outputMessage"/>
   </variables>
   <sequence name="main">
     <receive name="ReceiveSupplierPaymentsFile" createInstance="yes" partnerLink="EbsPaymentsFtpGetAdapter"
              portType="ns1:GetPaymentsFile_ptt" operation="GetPaymentsFile" variable="gvarSupplierPayments"/>
     <scope name="ScopeGetRecipientParty">
+      <variables>
+        <variable name="lvarOriginatorPartyEmail" messageType="ns5:getParty_inputMessage"/>
+        <variable name="lvarRecipientPartyEmail" messageType="ns6:getParty_inputMessage"/>
+      </variables>
       <faultHandlers>
+        <catch faultName="ns6:notFound" faultVariable="lvarRecipientNotFound"
+               faultMessageType="ns6:getParty_notFoundMessage">
+          <exit name="TerminateInvalidRecipient"/>
+        </catch>
         <catch faultName="ns5:notFound" faultVariable="lvarPartyNotFoundFault"
                faultMessageType="ns5:getParty_notFoundMessage">
-          <exit name="TerminateInvalidReipient"/>
+          <exit name="TerminateInvalidOriginator"/>
         </catch>
+        <catchAll>
+          <exit name="TerminateUnhandledError"/>
+        </catchAll>
       </faultHandlers>
-      <sequence name="SequenceGetRecipientParty">
-        <assign name="AssignPartyEmailIdToGetPartyInfoService">
-          <copy>
-            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:Cdtr/ns3:ContactInfo/ns3:EmailAddress</from>
-            <to>$gvarPartyEmail.request</to>
-          </copy>
-        </assign>
-        <invoke name="InvokeGetRecipientParty" partnerLink="GetRecipientPartyRestAdapter"
-                portType="ns5:GetOriginatorPartyRestAdapter_ptt" operation="getParty" inputVariable="gvarPartyEmail"
-                outputVariable="gvarOriginatorParty" bpelx:invokeAsDetail="no"/>
-      </sequence>
+      <flow name="Flow1">
+        <sequence name="SequenceGetOriginator">
+          <assign name="AssignPartyEmailIdToGetPartyInfoService">
+            <copy>
+              <from>ora:getPreference('originatorEmail')</from>
+              <to>$lvarOriginatorPartyEmail.request</to>
+            </copy>
+          </assign>
+          <invoke name="InvokeGetOriginatorParty"
+                  partnerLink="GetOriginatorPartyRestAdapter" portType="ns5:GetOriginatorPartyRestAdapter_ptt"
+                  operation="getParty" inputVariable="lvarOriginatorPartyEmail" bpelx:invokeAsDetail="no"
+                  outputVariable="gvarOriginatorParty"/>
+        </sequence>
+        <sequence name="SequenceGetRecipient">
+          <assign name="AssignPartyEmailIdToGetPartyInfoService">
+            <copy>
+              <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:Cdtr/ns3:ContactInfo/ns3:EmailAddress</from>
+              <to>$lvarRecipientPartyEmail.request</to>
+            </copy>
+          </assign>
+          <invoke name="InvokeGetRecipientParty" bpelx:invokeAsDetail="no" partnerLink="GetRecipientPartyRestAdapter"
+                  portType="ns6:GetRecipientPartRestAdapter_ptt" operation="getParty"
+                  inputVariable="lvarRecipientPartyEmail" outputVariable="gvarRecipientParty"/>
+        </sequence>
+      </flow>
     </scope>
   </sequence>
 </process>
