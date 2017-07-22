@@ -33,7 +33,8 @@
          xmlns:ns5="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter"
          xmlns:ns6="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetRecipientPartRestAdapter"
          xmlns:ns7="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorAccountDetails"
-         xmlns:ns8="http://www.deloitte.com/BlockchainIntgration/Payment/Account">
+         xmlns:ns8="http://www.deloitte.com/BlockchainIntgration/Payment/Account"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
   <!-- 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,6 +43,8 @@
      services integrated within this business process                  
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   -->
+  <import namespace="http://schemas.oracle.com/bpel/extension" location="../WSDLs/RuntimeFault.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/"/>
   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter"
           location="../WSDLs/EbsPaymentsFtpGetAdapter.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"
           ui:processWSDL="true"/>
@@ -108,11 +111,15 @@
         </sequence>
       </flow>
     </scope>
-    <scope name="ScopeGetOriginatorAccountBalance">
+    <scope name="ScopeInitiatePayment">
       <variables>
         <variable name="lvarOriginatorAccoutnReq" messageType="ns7:getAccountDetails_inputMessage"/>
       </variables>
       <faultHandlers>
+        <catch faultName="bpelx:assertFailure" faultVariable="lvarInsufficientBalanceFault"
+               faultMessageType="bpelx:RuntimeFaultMessage">
+          <exit name="TerminateInsufficientBalance"/>
+        </catch>
         <catch faultName="ns7:accountNotFound" faultVariable="lvarAccountNotFound"
                faultMessageType="ns7:getAccountDetails_accountNotFoundMessage">
           <exit name="TerminateAccountNotFound"/>
@@ -121,7 +128,7 @@
           <exit name="TerminateUnhandledError"/>
         </catchAll>
       </faultHandlers>
-      <sequence name="SequenceGetOriginatorAccountBalance">
+      <sequence name="SequenceInitiatePayment">
         <assign name="AssignOriginatorAccountToServiceInput">
           <copy>
             <from>ora:getPreference('originatorAccount')</from>
@@ -132,6 +139,12 @@
                 partnerLink="GetOriginatorAccountDetails" portType="ns7:GetOriginatorAccountDetails_ptt"
                 operation="getAccountDetails" inputVariable="lvarOriginatorAccoutnReq"
                 outputVariable="gvarOriginatorAccount"/>
+        <extensionActivity>
+          <bpelx:assert name="AssertBalanceSufficient">
+            <bpelx:expression>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:RmtInf/ns3:Strd/ns3:RfrdDocAmt/ns3:DuePyblAmt &lt;= $gvarOriginatorAccount.reply/ns8:currentBalance</bpelx:expression>
+            <bpelx:message>Originator Account balance is insufficient for the transaction.</bpelx:message>
+          </bpelx:assert>
+        </extensionActivity>
       </sequence>
     </scope>
   </sequence>

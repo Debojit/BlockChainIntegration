@@ -15,11 +15,11 @@
         </dgm:operations>
     </dgm:gService>
     <dgm:gReference name="GetOriginatorPartyRestAdapter">
-        <dgm:body borderWidth="2" arcRad="20" X="780" Y="26" width="136" height="84">
+        <dgm:body borderWidth="2" arcRad="20" X="790" Y="26" width="136" height="84">
             <dgm:borderColor r="153" g="153" b="153"/>
             <dgm:bgColor r="255" g="255" b="255"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="770" Y="19" width="156" height="98">
+        <dgm:shadow arcRad="20" X="780" Y="19" width="156" height="98">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="GetOriginatorPartyRestAdapter" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter#wsdl.interface(GetOriginatorPartyRestAdapter_ptt)"/>
@@ -29,11 +29,11 @@
         </dgm:operations>
     </dgm:gReference>
     <dgm:gReference name="GetRecipientPartyRestAdapter">
-        <dgm:body borderWidth="2" arcRad="20" X="780" Y="144" width="136" height="84">
+        <dgm:body borderWidth="2" arcRad="20" X="790" Y="144" width="136" height="84">
             <dgm:borderColor r="153" g="153" b="153"/>
             <dgm:bgColor r="255" g="255" b="255"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="770" Y="137" width="156" height="98">
+        <dgm:shadow arcRad="20" X="780" Y="137" width="156" height="98">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="GetRecipientPartyRestAdapter" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetRecipientPartRestAdapter#wsdl.interface(GetRecipientPartRestAdapter_ptt)"/>
@@ -43,11 +43,11 @@
         </dgm:operations>
     </dgm:gReference>
     <dgm:gReference name="GetOriginatorAccountDetails">
-        <dgm:body borderWidth="2" arcRad="20" X="780" Y="262" width="136" height="84">
+        <dgm:body borderWidth="2" arcRad="20" X="790" Y="262" width="136" height="84">
             <dgm:borderColor r="153" g="153" b="153"/>
             <dgm:bgColor r="255" g="255" b="255"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="770" Y="255" width="156" height="98">
+        <dgm:shadow arcRad="20" X="780" Y="255" width="156" height="98">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="GetOriginatorAccountDetails" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorAccountDetails#wsdl.interface(GetOriginatorAccountDetails_ptt)"/>
@@ -57,12 +57,12 @@
         </dgm:operations>
     </dgm:gReference>
     <dgm:gComponent name="CreateEbsPaymentsRippleABCSImpl">
-        <dgm:body borderWidth="2" arcRad="20" X="404" Y="130" width="130" height="111">
+        <dgm:body borderWidth="2" arcRad="20" X="409" Y="130" width="130" height="111">
             <dgm:borderColor r="69" g="113" b="140"/>
             <dgm:lightBgColor r="166" g="208" b="230"/>
             <dgm:darkBgColor r="99" g="162" b="201"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="394" Y="123" width="150" height="127">
+        <dgm:shadow arcRad="20" X="399" Y="123" width="150" height="127">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="EbsPaymentsFtpGetAdapter" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter#wsdl.interface(GetPaymentsFile_ptt)"/>
@@ -72,28 +72,28 @@
         <dgm:nodeIcon URI="/oracle/tip/tools/ide/bpel/shared/plugins/resources/images/soa/process_20x20.png" X="10" Y="4" width="20" height="20"/>
     </dgm:gComponent>
     <dgm:gWireLink source="EbsPaymentsFtpGetAdapter" target="CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter" width="2">
-        <dgm:gSegment X1="168" Y1="155" X2="394" Y2="155"/>
+        <dgm:gSegment X1="168" Y1="155" X2="399" Y2="155"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
     <dgm:gWireLink source="CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter" target="GetOriginatorPartyRestAdapter" width="2">
-        <dgm:gSegment X1="544" Y1="155" X2="568" Y2="155"/>
-        <dgm:gSegment X1="568" Y1="155" X2="568" Y2="36"/>
-        <dgm:gSegment X1="568" Y1="36" X2="770" Y2="36"/>
+        <dgm:gSegment X1="549" Y1="155" X2="573" Y2="155"/>
+        <dgm:gSegment X1="573" Y1="155" X2="573" Y2="36"/>
+        <dgm:gSegment X1="573" Y1="36" X2="780" Y2="36"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
     <dgm:gWireLink source="CreateEbsPaymentsRippleABCSImpl/GetRecipientPartyRestAdapter" target="GetRecipientPartyRestAdapter" width="2">
-        <dgm:gSegment X1="544" Y1="180" X2="583" Y2="180"/>
-        <dgm:gSegment X1="583" Y1="180" X2="583" Y2="154"/>
-        <dgm:gSegment X1="583" Y1="154" X2="770" Y2="154"/>
+        <dgm:gSegment X1="549" Y1="180" X2="588" Y2="180"/>
+        <dgm:gSegment X1="588" Y1="180" X2="588" Y2="154"/>
+        <dgm:gSegment X1="588" Y1="154" X2="780" Y2="154"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
     <dgm:gWireLink source="CreateEbsPaymentsRippleABCSImpl/GetOriginatorAccountDetails" target="GetOriginatorAccountDetails" width="2">
-        <dgm:gSegment X1="544" Y1="205" X2="568" Y2="205"/>
-        <dgm:gSegment X1="568" Y1="205" X2="568" Y2="272"/>
-        <dgm:gSegment X1="568" Y1="272" X2="770" Y2="272"/>
+        <dgm:gSegment X1="549" Y1="205" X2="573" Y2="205"/>
+        <dgm:gSegment X1="573" Y1="205" X2="573" Y2="272"/>
+        <dgm:gSegment X1="573" Y1="272" X2="780" Y2="272"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>

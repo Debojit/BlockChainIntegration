@@ -1,3 +1,4 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
 <wsdl:definitions
      name="EbsPaymentsFtpGetAdapter"
      targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter"
@@ -7,16 +8,18 @@
      xmlns:pc="http://xmlns.oracle.com/pcbpel/"
      xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
      xmlns:imp1="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03"
+     xmlns:ns1="http://schemas.oracle.com/bpel/extension"
     >
-  <plt:partnerLinkType name="GetPaymentsFile_plt" >
-    <plt:role name="GetPaymentsFile_role" >
-      <plt:portType name="tns:GetPaymentsFile_ptt" />
-    </plt:role>
-  </plt:partnerLinkType>
+    <plt:partnerLinkType name="GetPaymentsFile_plt">
+        <plt:role name="GetPaymentsFile_role">
+            <plt:portType name="tns:GetPaymentsFile_ptt"/>
+        </plt:role>
+    </plt:partnerLinkType>
+    <wsdl:import namespace="http://schemas.oracle.com/bpel/extension" location="RuntimeFault.wsdl"/>
     <wsdl:types>
-      <schema xmlns="http://www.w3.org/2001/XMLSchema" >
-        <import namespace="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03" schemaLocation="../Schemas/SupplierContact.xsd" />
-      </schema>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03" schemaLocation="../Schemas/SupplierContact.xsd"/>
+        </schema>
     </wsdl:types>
     <wsdl:message name="GetPaymentsFile_msg">
         <wsdl:part name="body" element="imp1:Document"/>
