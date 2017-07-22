@@ -5,8 +5,8 @@
      xmlns:jca="http://xmlns.oracle.com/pcbpel/wsdl/jca/"
      xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
      xmlns:pc="http://xmlns.oracle.com/pcbpel/"
-     xmlns:imp1="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03"
      xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:imp1="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03"
     >
   <plt:partnerLinkType name="GetPaymentsFile_plt" >
     <plt:role name="GetPaymentsFile_role" >

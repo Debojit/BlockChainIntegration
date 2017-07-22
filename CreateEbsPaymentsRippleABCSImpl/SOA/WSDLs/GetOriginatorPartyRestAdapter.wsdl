@@ -1,0 +1,50 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="GetOriginatorPartyRestAdapter"
+     targetNamespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter"
+     xmlns:tns="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter"
+     xmlns:inp1="http://www.deloitte.com/BlockchainIntgration/Payment/PartyInfo"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:inp2="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter"
+     xmlns:inp3="http://www.deloitte.com/BlockchainIntgration/Payment/Exception"
+    >
+    <plnk:partnerLinkType name="GetOriginatorPartyRestAdapter">
+        <plnk:role name="GetOriginatorPartyRestAdapterProvider" portType="tns:GetOriginatorPartyRestAdapter_ptt"/>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://www.deloitte.com/BlockchainIntgration/Payment/PartyInfo"
+                 schemaLocation="../Schemas/Party.xsd"/>
+        </xsd:schema>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter"
+             elementFormDefault="qualified">
+            <element name="empty">
+                <complexType/>
+            </element>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://www.deloitte.com/BlockchainIntgration/Payment/Exception"
+                 schemaLocation="../Schemas/Exceptions.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="getParty_inputMessage">
+        <wsdl:part name="request" element="inp1:EmailId"/>
+    </wsdl:message>
+    <wsdl:message name="getParty_outputMessage">
+        <wsdl:part name="reply" element="inp1:PartyInfo"/>
+    </wsdl:message>
+    <wsdl:message name="Rest_EmptyMessage">
+        <wsdl:part name="Empty" element="tns:empty"/>
+    </wsdl:message>
+    <wsdl:message name="getParty_notFoundMessage">
+        <wsdl:part name="fault_notFound" element="inp3:Exceptions"/>
+    </wsdl:message>
+    <wsdl:portType name="GetOriginatorPartyRestAdapter_ptt">
+        <wsdl:operation name="getParty">
+            <wsdl:input message="tns:getParty_inputMessage"/>
+            <wsdl:output message="tns:getParty_outputMessage"/>
+            <wsdl:fault name="notFound" message="tns:getParty_notFoundMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

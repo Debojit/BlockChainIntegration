@@ -1,0 +1,62 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://www.deloitte.com/BlockchainIntgration/Payment/PartyInfo"
+            targetNamespace="http://www.deloitte.com/BlockchainIntgration/Payment/PartyInfo"
+            elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xsd:element name="EmailId" type="xsd:string"/>
+  <xsd:element name="PartyInfo">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="size" type="xsd:integer"/>
+        <xsd:element name="pagingState"/>
+        <xsd:element name="parties">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="partyId" type="xsd:string"/>
+              <xsd:element name="emailId" type="xsd:string"/>
+              <xsd:element name="lastName" type="xsd:string"/>
+              <xsd:element name="firstName" type="xsd:string"/>
+              <xsd:element name="middleName" type="xsd:string"/>
+              <xsd:element name="suffixName" type="xsd:string"/>
+              <xsd:element name="prefixName" type="xsd:string"/>
+              <xsd:element name="ssNumber" type="xsd:string"/>
+              <xsd:element name="driverLicense" type="xsd:string"/>
+              <xsd:element name="driverLicenseExpiryDate" type="xsd:string"/>
+              <xsd:element name="birthDate" type="xsd:string"/>
+              <xsd:element name="gender" type="xsd:string"/>
+              <xsd:element name="mothersMaidenName" type="xsd:string"/>
+              <xsd:element name="deceasedDate" type="xsd:string"/>
+              <xsd:element name="partyStatus" type="xsd:string"/>
+              <xsd:element name="recordType" type="xsd:string"/>
+              <xsd:element name="isPrimaryCustomer" type="xsd:string"/>
+              <xsd:element name="methodOfContact" type="xsd:string"/>
+              <xsd:element name="phoneMobile" type="xsd:integer"/>
+              <xsd:element name="phoneHome" type="xsd:string"/>
+              <xsd:element name="addressLine1" type="xsd:string"/>
+              <xsd:element name="addressLine2" type="xsd:string"/>
+              <xsd:element name="city" type="xsd:string"/>
+              <xsd:element name="stateCode" type="xsd:string"/>
+              <xsd:element name="stateDesc" type="xsd:string"/>
+              <xsd:element name="zipCode" type="xsd:integer"/>
+              <xsd:element name="countryCode" type="xsd:string"/>
+              <xsd:element name="countryDescription" type="xsd:string"/>
+              <xsd:element name="countryDialingCode" type="xsd:integer"/>
+              <xsd:element name="kycStatus" type="xsd:string"/>
+              <xsd:element name="twitterId" type="xsd:string"/>
+              <xsd:element name="facebookId" type="xsd:string"/>
+              <xsd:element name="createdBy" type="xsd:string"/>
+              <xsd:element name="createdDate" type="xsd:string"/>
+              <xsd:element name="updatedBy" type="xsd:string"/>
+              <xsd:element name="updatedDate" type="xsd:string"/>
+              <xsd:element name="digitalId" type="xsd:string"/>
+              <xsd:element name="password" type="xsd:string"/>
+              <xsd:element name="salesforceCustomerId" type="xsd:string"/>
+              <xsd:element name="additionalProperties" type="xsd:string"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="additionalProperties"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

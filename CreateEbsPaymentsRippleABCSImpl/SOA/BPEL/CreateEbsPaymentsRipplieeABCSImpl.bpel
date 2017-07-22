@@ -16,7 +16,21 @@
                xmlns:ora="http://schemas.oracle.com/xpath/extension"
                xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
          xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter"
-         xmlns:bpelx="http://schemas.oracle.com/bpel/extension" xmlns:ui="http://xmlns.oracle.com/soa/designer">
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension" xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:ns2="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/PaymentOriginatorRestAdapter"
+         xmlns:ns4="http://www.deloitte.com/BlockchainIntgration/Payment/PartyInfo"
+         xmlns:ns3="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns5="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter">
 
   <!-- 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,12 +45,35 @@
   <partnerLinks>
     <partnerLink name="EbsPaymentsFtpGetAdapter" partnerLinkType="ns1:GetPaymentsFile_plt"
                  myRole="GetPaymentsFile_role"/>
+    <partnerLink name="GetRecipientPartyRestAdapter" partnerLinkType="ns5:GetOriginatorPartyRestAdapter"
+                 partnerRole="GetOriginatorPartyRestAdapterProvider"/>
   </partnerLinks>
   <variables>
     <variable name="gvarSupplierPayments" messageType="ns1:GetPaymentsFile_msg"/>
+    <variable name="gvarPartyEmail" messageType="ns5:getParty_inputMessage"/>
+    <variable name="gvarOriginatorParty" messageType="ns5:getParty_outputMessage"/>
   </variables>
   <sequence name="main">
     <receive name="ReceiveSupplierPaymentsFile" createInstance="yes" partnerLink="EbsPaymentsFtpGetAdapter"
              portType="ns1:GetPaymentsFile_ptt" operation="GetPaymentsFile" variable="gvarSupplierPayments"/>
+    <scope name="ScopeGetRecipientParty">
+      <faultHandlers>
+        <catch faultName="ns5:notFound" faultVariable="lvarPartyNotFoundFault"
+               faultMessageType="ns5:getParty_notFoundMessage">
+          <exit name="TerminateInvalidReipient"/>
+        </catch>
+      </faultHandlers>
+      <sequence name="SequenceGetRecipientParty">
+        <assign name="AssignPartyEmailIdToGetPartyInfoService">
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:Cdtr/ns3:ContactInfo/ns3:EmailAddress</from>
+            <to>$gvarPartyEmail.request</to>
+          </copy>
+        </assign>
+        <invoke name="InvokeGetRecipientParty" partnerLink="GetRecipientPartyRestAdapter"
+                portType="ns5:GetOriginatorPartyRestAdapter_ptt" operation="getParty" inputVariable="gvarPartyEmail"
+                outputVariable="gvarOriginatorParty" bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
   </sequence>
 </process>

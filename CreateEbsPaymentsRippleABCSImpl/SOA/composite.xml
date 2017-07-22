@@ -13,6 +13,8 @@
            xmlns:sca-ext="http://xmlns.oracle.com/sca/1.0-ext">
   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter"
           location="WSDLs/EbsPaymentsFtpGetAdapter.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter"
+          location="WSDLs/GetOriginatorPartyRestAdapter.wsdl" importType="wsdl"/>
   <service name="EbsPaymentsFtpGetAdapter" ui:wsdlLocation="WSDLs/EbsPaymentsFtpGetAdapter.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter#wsdl.interface(GetPaymentsFile_ptt)"/>
     <binding.jca config="Adapters/EbsPaymentsFtpGetAdapter_ftp.jca">
@@ -27,12 +29,24 @@
       <service name="EbsPaymentsFtpGetAdapter" ui:wsdlLocation="WSDLs/EbsPaymentsFtpGetAdapter.wsdl">
         <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter#wsdl.interface(GetPaymentsFile_ptt)"/>
       </service>
+      <reference name="GetRecipientPartyRestAdapter" ui:wsdlLocation="WSDLs/GetOriginatorPartyRestAdapter.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter#wsdl.interface(GetOriginatorPartyRestAdapter_ptt)"/>
+      </reference>
     </componentType>
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
     <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string" many="false">sync</property>
   </component>
+  <reference name="GetRecipientPartyRestAdapter" ui:wsdlLocation="WSDLs/GetOriginatorPartyRestAdapter.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter#wsdl.interface(GetOriginatorPartyRestAdapter_ptt)"/>
+    <binding.rest config="Adapters/GetOriginatorPartyRestAdapter.wadl"
+                  location="http://sitweb.digitalbank.us/party-service/rest/us-en/banks/ddb"/>
+  </reference>
   <wire>
     <source.uri>EbsPaymentsFtpGetAdapter</source.uri>
     <target.uri>CreateEbsPaymentsRipplieeABCSImpl/EbsPaymentsFtpGetAdapter</target.uri>
+  </wire>
+  <wire>
+    <source.uri>CreateEbsPaymentsRipplieeABCSImpl/GetRecipientPartyRestAdapter</source.uri>
+    <target.uri>GetRecipientPartyRestAdapter</target.uri>
   </wire>
 </composite>

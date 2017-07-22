@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.deloitte.com/BlockchainIntgration/Payment/Exception"
+            targetNamespace="http://www.deloitte.com/BlockchainIntgration/Payment/Exception"
+            elementFormDefault="qualified" xmlns:nxsd="http://xmlns.oracle.com/pcbpel/nxsd" nxsd:version="JSON"
+            nxsd:encoding="US-ASCII">
+  <xsd:element name="Exceptions">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="exceptionObject">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="exceptionCode" type="xsd:string"/>
+              <xsd:element name="timeStamp" type="xsd:string"/>
+              <xsd:element name="message" type="xsd:string"/>
+              <xsd:element name="correlationId" type="xsd:string"/>
+              <xsd:element name="httpCode" type="xsd:string"/>
+              <xsd:element name="causes">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="causedetail" type="xsd:string"/>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="additionalProperties"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="additionalProperties"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
