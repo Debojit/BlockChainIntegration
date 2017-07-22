@@ -41,6 +41,8 @@
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
     <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string" many="false">sync</property>
     <property name="bpel.preference.originatorEmail" type="xs:string">ddbsit@usa.com</property>
+    <property name="partnerLink.GetRecipientPartyRestAdapter.nonBlockingInvoke" type="xs:string" many="false">true</property>
+    <property name="partnerLink.GetOriginatorPartyRestAdapter.nonBlockingInvoke" type="xs:string" many="false">true</property>
   </component>
   <reference name="GetOriginatorPartyRestAdapter" ui:wsdlLocation="WSDLs/GetOriginatorPartyRestAdapter.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter#wsdl.interface(GetOriginatorPartyRestAdapter_ptt)"/>
