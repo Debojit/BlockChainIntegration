@@ -17,6 +17,8 @@
           location="WSDLs/GetOriginatorPartyRestAdapter.wsdl" importType="wsdl"/>
   <import namespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetRecipientPartRestAdapter"
           location="WSDLs/GetRecipientPartyRestAdapter.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorAccountDetails"
+          location="WSDLs/GetOriginatorAccountDetails.wsdl" importType="wsdl"/>
   <service name="EbsPaymentsFtpGetAdapter" ui:wsdlLocation="WSDLs/EbsPaymentsFtpGetAdapter.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter#wsdl.interface(GetPaymentsFile_ptt)"/>
     <binding.jca config="Adapters/EbsPaymentsFtpGetAdapter_ftp.jca">
@@ -37,10 +39,15 @@
       <reference name="GetRecipientPartyRestAdapter" ui:wsdlLocation="WSDLs/GetRecipientPartyRestAdapter.wsdl">
         <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetRecipientPartRestAdapter#wsdl.interface(GetRecipientPartRestAdapter_ptt)"/>
       </reference>
+      <reference name="GetOriginatorAccountDetails" ui:wsdlLocation="WSDLs/GetOriginatorAccountDetails.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorAccountDetails#wsdl.interface(GetOriginatorAccountDetails_ptt)"/>
+      </reference>
     </componentType>
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
     <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string" many="false">sync</property>
     <property name="bpel.preference.originatorEmail" type="xs:string">ddbsit@usa.com</property>
+    <property name="bpel.preference.originatorAccount" type="xs:string">cda45d60-579a-11e6-94e4-114dded705e0</property>
+    <property name="bpel.preference.recipientAccount" type="xs:string">22f09610-3677-11e7-b588-9b38f3a6dc8a</property>
     <property name="partnerLink.GetRecipientPartyRestAdapter.nonBlockingInvoke" type="xs:string" many="false">true</property>
     <property name="partnerLink.GetOriginatorPartyRestAdapter.nonBlockingInvoke" type="xs:string" many="false">true</property>
   </component>
@@ -54,6 +61,11 @@
     <binding.rest config="Adapters/GetRecipientPartyRestAdapter.wadl"
                   location="http://sitweb.digitalbank.us/party-service/rest/us-en/banks/dza/"/>
   </reference>
+  <reference name="GetOriginatorAccountDetails" ui:wsdlLocation="WSDLs/GetOriginatorAccountDetails.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorAccountDetails#wsdl.interface(GetOriginatorAccountDetails_ptt)"/>
+    <binding.rest config="Adapters/GetOriginatorAccountDetails.wadl"
+                  location="http://sitweb.digitalbank.us/account-service/rest/us-en/banks/ddb"/>
+  </reference>
   <wire>
     <source.uri>EbsPaymentsFtpGetAdapter</source.uri>
     <target.uri>CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter</target.uri>
@@ -65,5 +77,9 @@
   <wire>
     <source.uri>CreateEbsPaymentsRippleABCSImpl/GetRecipientPartyRestAdapter</source.uri>
     <target.uri>GetRecipientPartyRestAdapter</target.uri>
+  </wire>
+  <wire>
+    <source.uri>CreateEbsPaymentsRippleABCSImpl/GetOriginatorAccountDetails</source.uri>
+    <target.uri>GetOriginatorAccountDetails</target.uri>
   </wire>
 </composite>

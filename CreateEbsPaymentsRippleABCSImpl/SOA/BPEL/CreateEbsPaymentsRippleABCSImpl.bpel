@@ -31,7 +31,9 @@
          xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
          xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
          xmlns:ns5="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorPartyRestAdapter"
-         xmlns:ns6="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetRecipientPartRestAdapter">
+         xmlns:ns6="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetRecipientPartRestAdapter"
+         xmlns:ns7="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorAccountDetails"
+         xmlns:ns8="http://www.deloitte.com/BlockchainIntgration/Payment/Account">
 
   <!-- 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,11 +52,14 @@
                  partnerRole="GetOriginatorPartyRestAdapterProvider"/>
     <partnerLink name="GetRecipientPartyRestAdapter" partnerLinkType="ns6:GetRecipientPartRestAdapter"
                  partnerRole="GetRecipientPartRestAdapterProvider"/>
+    <partnerLink name="GetOriginatorAccountDetails" partnerLinkType="ns7:GetOriginatorAccountDetails"
+                 partnerRole="GetOriginatorAccountDetailsProvider"/>
   </partnerLinks>
   <variables>
     <variable name="gvarSupplierPayments" messageType="ns1:GetPaymentsFile_msg"/>
     <variable name="gvarOriginatorParty" messageType="ns5:getParty_outputMessage"/>
     <variable name="gvarRecipientParty" messageType="ns6:getParty_outputMessage"/>
+    <variable name="gvarOriginatorAccount" messageType="ns7:getAccountDetails_outputMessage"/>
   </variables>
   <sequence name="main">
     <receive name="ReceiveSupplierPaymentsFile" createInstance="yes" partnerLink="EbsPaymentsFtpGetAdapter"
@@ -102,6 +107,32 @@
                   inputVariable="lvarRecipientPartyEmail" outputVariable="gvarRecipientParty"/>
         </sequence>
       </flow>
+    </scope>
+    <scope name="ScopeGetOriginatorAccountBalance">
+      <variables>
+        <variable name="lvarOriginatorAccoutnReq" messageType="ns7:getAccountDetails_inputMessage"/>
+      </variables>
+      <faultHandlers>
+        <catch faultName="ns7:accountNotFound" faultVariable="lvarAccountNotFound"
+               faultMessageType="ns7:getAccountDetails_accountNotFoundMessage">
+          <exit name="TerminateAccountNotFound"/>
+        </catch>
+        <catchAll>
+          <exit name="TerminateUnhandledError"/>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="SequenceGetOriginatorAccountBalance">
+        <assign name="AssignOriginatorAccountToServiceInput">
+          <copy>
+            <from>ora:getPreference('originatorAccount')</from>
+            <to>$lvarOriginatorAccoutnReq.request/ns8:accountId</to>
+          </copy>
+        </assign>
+        <invoke name="InvokeGetOriginatorAccountDetails" bpelx:invokeAsDetail="no"
+                partnerLink="GetOriginatorAccountDetails" portType="ns7:GetOriginatorAccountDetails_ptt"
+                operation="getAccountDetails" inputVariable="lvarOriginatorAccoutnReq"
+                outputVariable="gvarOriginatorAccount"/>
+      </sequence>
     </scope>
   </sequence>
 </process>
