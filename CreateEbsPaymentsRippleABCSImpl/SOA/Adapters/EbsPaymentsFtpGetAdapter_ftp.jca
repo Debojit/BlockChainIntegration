@@ -1,0 +1,17 @@
+<adapter-config name="EbsPaymentsFtpGetAdapter" adapter="ftp" wsdlLocation="../WSDLs/EbsPaymentsFtpGetAdapter.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/Ftp/BcPaymtFtpAdapter" UIincludeWildcard="DELFT_Supplier_Contact_Info*xml"/>
+  <endpoint-activation portType="GetPaymentsFile_ptt" operation="GetPaymentsFile">
+    <activation-spec className="oracle.tip.adapter.ftp.inbound.FTPActivationSpec">
+      <property name="DeleteFile" value="true"/>
+      <property name="MinimumAge" value="0"/>
+      <property name="PhysicalDirectory" value="/upload/Blockchain/Payments/data"/>
+      <property name="Recursive" value="true"/>
+      <property name="PollingFrequency" value="10"/>
+      <property name="FileType" value="ascii"/>
+      <property name="IncludeFiles" value="DELFT_Supplier_Contact_Info.*xml"/>
+      <property name="UseHeaders" value="false"/>
+    </activation-spec>
+  </endpoint-activation>
+
+</adapter-config>

@@ -1,0 +1,42 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Sat Jul 22 15:47:03 IST 2017
+  Author:  debsinha
+  Type: BPEL 2.0 Process
+  Purpose: Empty BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="CreateEbsPaymentsRipplieeABCSImpl"
+               targetNamespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/CreateEbsPaymentsRipplieeABCSImpl"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/CreateEbsPaymentsRipplieeABCSImpl"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension" xmlns:ui="http://xmlns.oracle.com/soa/designer">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter"
+          location="../WSDLs/EbsPaymentsFtpGetAdapter.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"
+          ui:processWSDL="true"/>
+  <partnerLinks>
+    <partnerLink name="EbsPaymentsFtpGetAdapter" partnerLinkType="ns1:GetPaymentsFile_plt"
+                 myRole="GetPaymentsFile_role"/>
+  </partnerLinks>
+  <variables>
+    <variable name="gvarSupplierPayments" messageType="ns1:GetPaymentsFile_msg"/>
+  </variables>
+  <sequence name="main">
+    <receive name="ReceiveSupplierPaymentsFile" createInstance="yes" partnerLink="EbsPaymentsFtpGetAdapter"
+             portType="ns1:GetPaymentsFile_ptt" operation="GetPaymentsFile" variable="gvarSupplierPayments"/>
+  </sequence>
+</process>
