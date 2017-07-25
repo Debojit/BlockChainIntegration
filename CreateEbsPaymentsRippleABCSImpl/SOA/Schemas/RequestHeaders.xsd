@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.example.org"
+            targetNamespace="http://www.deloitte.com/BlockchainIntgration/Header" elementFormDefault="qualified">
+  <xsd:element name="HeaderElements">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ApiCountry" type="xsd:string"/>
+        <xsd:element name="ApiLang" type="xsd:string"/>
+        <xsd:element name="ApiMessageId" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.example.org"
+            targetNamespace="http://www.deloitte.com/BlockchainIntgration/Payment/MakePayment"
+            elementFormDefault="qualified">
+  <xsd:element name="PaymentRequest">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="originatorAccountNumber" type="xsd:string"/>
+        <xsd:element name="originatorPhoneNumber" type="xsd:string"/>
+        <xsd:element name="beneficiaryPhoneNumber" type="xsd:string"/>
+        <xsd:element name="originatorAmount" type="xsd:string"/>
+        <xsd:element name="originatorCurrencyCode" type="xsd:string"/>
+        <xsd:element name="paymentTypeCode" type="xsd:string"/>
+        <xsd:element name="beneficiaryCurrencyCode" type="xsd:string"/>
+        <xsd:element name="originatorRefComments" type="xsd:string"/>
+        <xsd:element name="beneficiaryRefComments" type="xsd:string"/>
+        <xsd:element name="beneficiaryCountryCode" type="xsd:string"/>
+        <xsd:element name="conversionRate" type="xsd:string"/>
+        <xsd:element name="fees" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="PaymentResponse">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="status" type="xsd:string"/>
+        <xsd:element name="transactionId" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

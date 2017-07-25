@@ -6,15 +6,17 @@
    <partnerlink_locations>
       <partnerlink name="EbsPaymentsFtpGetAdapter" x="0" y="90" side="left"/>
       <partnerlink name="GetRecipientPartyRestAdapter" x="0" y="401" side="left"/>
+      <partnerlink name="InitiateBlockchainPayment" x="0" y="1026" side="left"/>
       <partnerlink name="GetOriginatorAccountDetails" x="0" y="738" side="left"/>
-      <partnerlink name="GetOriginatorPartyRestAdapter" x="1177" y="401" side="right"/>
+      <partnerlink name="GetOriginatorPartyRestAdapter" x="1311" y="401" side="right"/>
    </partnerlink_locations>
-   <graph_layout viewport="110,394,1053,420" show_swimlanes="true">
+   <graph_layout viewport="185,799,1053,420" show_swimlanes="true">
       <layout_item collapsed="false" xpath="/process" type="process" showhandlers="true"/>
       <layout_item collapsed="false" xpath="/process/sequence" type="sequence"/>
       <layout_item collapsed="false" xpath="/process/sequence/scope[1]" type="scope" showhandlers="true"/>
       <layout_item collapsed="false" xpath="/process/sequence/scope[1]/faultHandlers/catch[1]" type="catch"/>
       <layout_item collapsed="false" xpath="/process/sequence/scope[1]/faultHandlers/catch[2]" type="catch"/>
+      <layout_item collapsed="false" xpath="/process/sequence/scope[1]/faultHandlers/catch[3]" type="catch"/>
       <layout_item collapsed="false" xpath="/process/sequence/scope[1]/faultHandlers/catchAll" type="catchall"/>
       <layout_item collapsed="false" xpath="/process/sequence/scope[1]/flow" type="flow"/>
       <layout_item collapsed="false" xpath="/process/sequence/scope[1]/flow/sequence[1]" type="sequence"/>
@@ -22,6 +24,7 @@
       <layout_item collapsed="false" xpath="/process/sequence/scope[2]" type="scope" showhandlers="true"/>
       <layout_item collapsed="false" xpath="/process/sequence/scope[2]/faultHandlers/catch[1]" type="catch"/>
       <layout_item collapsed="false" xpath="/process/sequence/scope[2]/faultHandlers/catch[2]" type="catch"/>
+      <layout_item collapsed="false" xpath="/process/sequence/scope[2]/faultHandlers/catch[3]" type="catch"/>
       <layout_item collapsed="false" xpath="/process/sequence/scope[2]/faultHandlers/catchAll" type="catchall"/>
       <layout_item collapsed="false" xpath="/process/sequence/scope[2]/sequence" type="sequence"/>
    </graph_layout>

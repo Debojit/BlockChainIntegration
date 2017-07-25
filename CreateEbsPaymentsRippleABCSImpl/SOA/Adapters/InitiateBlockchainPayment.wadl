@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<application xmlns:soa="http://www.oracle.com/soa/rest" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InitiateBlockchainPayment" xmlns:ns1="http://www.deloitte.com/BlockchainIntgration/Payment/MakePayment" xmlns="http://wadl.dev.java.net/2009/02">
+   <doc title="InitiateBlockchainPayment">RestReference</doc>
+   <grammars>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://www.deloitte.com/BlockchainIntgration/Payment/MakePayment" schemaLocation="../Schemas/Payments.xsd"/>
+        </xsd:schema>
+   </grammars>
+   <resources>
+      <resource path="/managepayments">
+         <method name="POST" soa:wsdlOperation="makePayment">
+            <request>
+               <representation mediaType="application/json" element="cns:PaymentRequest" xmlns:cns="http://www.deloitte.com/BlockchainIntgration/Payment/MakePayment"/>
+            </request>
+            <response status="200">
+               <representation mediaType="application/json" element="cns:PaymentResponse" xmlns:cns="http://www.deloitte.com/BlockchainIntgration/Payment/MakePayment"/>
+            </response>
+         </method>
+      </resource>
+   </resources>
+</application>

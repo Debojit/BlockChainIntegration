@@ -1,0 +1,31 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="InitiateBlockchainPayment"
+     targetNamespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InitiateBlockchainPayment"
+     xmlns:tns="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InitiateBlockchainPayment"
+     xmlns:inp1="http://www.deloitte.com/BlockchainIntgration/Payment/MakePayment"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="InitiateBlockchainPayment">
+        <plnk:role name="InitiateBlockchainPaymentProvider" portType="tns:InitiateBlockchainPayment_ptt"/>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://www.deloitte.com/BlockchainIntgration/Payment/MakePayment"
+                 schemaLocation="../Schemas/Payments.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="makePayment_inputMessage">
+        <wsdl:part name="request" element="inp1:PaymentRequest"/>
+    </wsdl:message>
+    <wsdl:message name="makePayment_outputMessage">
+        <wsdl:part name="reply" element="inp1:PaymentResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="InitiateBlockchainPayment_ptt">
+        <wsdl:operation name="makePayment">
+            <wsdl:input message="tns:makePayment_inputMessage"/>
+            <wsdl:output message="tns:makePayment_outputMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

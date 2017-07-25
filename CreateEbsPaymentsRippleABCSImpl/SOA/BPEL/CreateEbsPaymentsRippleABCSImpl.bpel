@@ -34,7 +34,10 @@
          xmlns:ns6="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetRecipientPartRestAdapter"
          xmlns:ns7="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorAccountDetails"
          xmlns:ns8="http://www.deloitte.com/BlockchainIntgration/Payment/Account"
-         xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns11="http://xmlns.oracle.com/pcbpel/adapter/db/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/CreatePaymentRecordDBAdapter"
+         xmlns:ns12="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InitiateBlockchainPayment"
+         xmlns:ns9="http://www.deloitte.com/BlockchainIntgration/Payment/MakePayment">
 
   <!-- 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,12 +60,15 @@
                  partnerRole="GetRecipientPartRestAdapterProvider"/>
     <partnerLink name="GetOriginatorAccountDetails" partnerLinkType="ns7:GetOriginatorAccountDetails"
                  partnerRole="GetOriginatorAccountDetailsProvider"/>
+    <partnerLink name="InitiateBlockchainPayment" partnerLinkType="ns12:InitiateBlockchainPayment"
+                 partnerRole="InitiateBlockchainPaymentProvider"/>
   </partnerLinks>
   <variables>
     <variable name="gvarSupplierPayments" messageType="ns1:GetPaymentsFile_msg"/>
     <variable name="gvarOriginatorParty" messageType="ns5:getParty_outputMessage"/>
     <variable name="gvarRecipientParty" messageType="ns6:getParty_outputMessage"/>
     <variable name="gvarOriginatorAccount" messageType="ns7:getAccountDetails_outputMessage"/>
+    <variable name="gvarPaymentStatus" messageType="ns12:makePayment_outputMessage"/>
   </variables>
   <sequence name="main">
     <receive name="ReceiveSupplierPaymentsFile" createInstance="yes" partnerLink="EbsPaymentsFtpGetAdapter"
@@ -73,6 +79,9 @@
         <variable name="lvarRecipientPartyEmail" messageType="ns6:getParty_inputMessage"/>
       </variables>
       <faultHandlers>
+        <catch faultName="bpelx:timeout" faultVariable="lvarTimeoutError" faultMessageType="bpelx:RuntimeFaultMessage">
+          <exit name="TerminateProcessTimeout"/>
+        </catch>
         <catch faultName="ns6:notFound" faultVariable="lvarRecipientNotFound"
                faultMessageType="ns6:getParty_notFoundMessage">
           <exit name="TerminateInvalidRecipient"/>
@@ -114,8 +123,12 @@
     <scope name="ScopeInitiatePayment">
       <variables>
         <variable name="lvarOriginatorAccoutnReq" messageType="ns7:getAccountDetails_inputMessage"/>
+        <variable name="lvarPaymentRequest" messageType="ns12:makePayment_inputMessage"/>
       </variables>
       <faultHandlers>
+        <catch faultName="bpelx:timeout" faultVariable="lvarTimeoutError" faultMessageType="bpelx:RuntimeFaultMessage">
+          <exit name="TerminateProcessError"/>
+        </catch>
         <catch faultName="bpelx:assertFailure" faultVariable="lvarInsufficientBalanceFault"
                faultMessageType="bpelx:RuntimeFaultMessage">
           <exit name="TerminateInsufficientBalance"/>
@@ -145,6 +158,73 @@
             <bpelx:message>Originator Account balance is insufficient for the transaction.</bpelx:message>
           </bpelx:assert>
         </extensionActivity>
+        <assign name="AssignPaymentRequestToPaymentService">
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:Cdtr/ns3:ContactInfo/ns3:PhoneNumber</from>
+            <to>$lvarPaymentRequest.request/ns9:beneficiaryPhoneNumber</to>
+          </copy>
+          <copy>
+            <from>ora:getPreference('originatorAccount')</from>
+            <to>$lvarPaymentRequest.request/ns9:originatorAccountNumber</to>
+          </copy>
+          <copy>
+            <from>'1-15714829495'</from>
+            <to>$lvarPaymentRequest.request/ns9:originatorPhoneNumber</to>
+          </copy>
+          <copy>
+            <from>'st1'</from>
+            <to>$lvarPaymentRequest.request/ns9:paymentTypeCode</to>
+          </copy>
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:CdtrAcct/ns3:Nm</from>
+            <to>$lvarPaymentRequest.request/ns9:beneficiaryRefComments</to>
+          </copy>
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:GrpHdr/ns3:InitgPty/ns3:Nm</from>
+            <to>$lvarPaymentRequest.request/ns9:originatorRefComments</to>
+          </copy>
+          <copy>
+            <from>'2'</from>
+            <to>$lvarPaymentRequest.request/ns9:fees</to>
+          </copy>
+          <copy>
+            <from>ora:getNodeValue($gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:RmtInf/ns3:Strd/ns3:RfrdDocAmt/ns3:DuePyblAmt)</from>
+            <to>$lvarPaymentRequest.request/ns9:originatorAmount</to>
+          </copy>
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:DbtrAcct/ns3:Ccy</from>
+            <to>$lvarPaymentRequest.request/ns9:originatorCurrencyCode</to>
+          </copy>
+          <copy>
+            <from>'1'</from>
+            <to>$lvarPaymentRequest.request/ns9:conversionRate</to>
+          </copy>
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:CdtrAgt/ns3:FinInstnId/ns3:PstlAdr/ns3:Ctry</from>
+            <to>$lvarPaymentRequest.request/ns9:beneficiaryCountryCode</to>
+          </copy>
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:RmtInf/ns3:Strd/ns3:RfrdDocAmt/ns3:DuePyblAmt/@Ccy</from>
+            <to>$lvarPaymentRequest.request/ns9:beneficiaryCurrencyCode</to>
+          </copy>
+        </assign>
+        <invoke name="InvokeInitiateBlockchainPayment"
+                partnerLink="InitiateBlockchainPayment" portType="ns12:InitiateBlockchainPayment_ptt"
+                operation="makePayment" inputVariable="lvarPaymentRequest" outputVariable="gvarPaymentStatus"
+                bpelx:invokeAsDetail="no">
+          <bpelx:toProperties>
+            <bpelx:toProperty name="rest.binding.http.api-country">"US"</bpelx:toProperty>
+            <bpelx:toProperty name="rest.binding.http.api-lang">"EN"</bpelx:toProperty>
+            <bpelx:toProperty name="rest.binding.http.api-message-id">"f47ac10b-58cc-4372-a567-0e02b2c3d479"</bpelx:toProperty>
+            <bpelx:toProperty name="rest.binding.http.api-message-timestamp">"2017-06-28T11:19:40.000Z"</bpelx:toProperty>
+            <bpelx:toProperty name="rest.binding.http.api-organisation">"ddb"</bpelx:toProperty>
+            <bpelx:toProperty name="rest.binding.http.api-related-id">"f47ac10b-58cc-4372-a567-0e02b2c3d479"</bpelx:toProperty>
+            <bpelx:toProperty name="rest.binding.http.api-transaction-id">"f47ac10b-58cc-4372-a567-0e02b2c3d479"</bpelx:toProperty>
+            <bpelx:toProperty name="rest.binding.http.api-transaction-timestamp">xp20:current-dateTime()</bpelx:toProperty>
+            <bpelx:toProperty name="rest.binding.http.api-cor-timestamp">"2017-06-28T11:19:40.000Z"</bpelx:toProperty>
+            <bpelx:toProperty name="rest.binding.http.Content-Type">'application/json'</bpelx:toProperty>
+          </bpelx:toProperties>
+        </invoke>
       </sequence>
     </scope>
   </sequence>

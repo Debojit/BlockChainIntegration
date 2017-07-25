@@ -19,6 +19,8 @@
           location="WSDLs/GetRecipientPartyRestAdapter.wsdl" importType="wsdl"/>
   <import namespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorAccountDetails"
           location="WSDLs/GetOriginatorAccountDetails.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InitiateBlockchainPayment"
+          location="WSDLs/InitiateBlockchainPayment.wsdl" importType="wsdl"/>
   <service name="EbsPaymentsFtpGetAdapter" ui:wsdlLocation="WSDLs/EbsPaymentsFtpGetAdapter.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter#wsdl.interface(GetPaymentsFile_ptt)"/>
     <binding.jca config="Adapters/EbsPaymentsFtpGetAdapter_ftp.jca">
@@ -41,6 +43,9 @@
       </reference>
       <reference name="GetOriginatorAccountDetails" ui:wsdlLocation="WSDLs/GetOriginatorAccountDetails.wsdl">
         <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/GetOriginatorAccountDetails#wsdl.interface(GetOriginatorAccountDetails_ptt)"/>
+      </reference>
+      <reference name="InitiateBlockchainPayment" ui:wsdlLocation="WSDLs/InitiateBlockchainPayment.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InitiateBlockchainPayment#wsdl.interface(InitiateBlockchainPayment_ptt)"/>
       </reference>
     </componentType>
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
@@ -66,6 +71,11 @@
     <binding.rest config="Adapters/GetOriginatorAccountDetails.wadl"
                   location="http://sitweb.digitalbank.us/account-service/rest/us-en/banks/ddb"/>
   </reference>
+  <reference name="InitiateBlockchainPayment" ui:wsdlLocation="WSDLs/InitiateBlockchainPayment.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InitiateBlockchainPayment#wsdl.interface(InitiateBlockchainPayment_ptt)"/>
+    <binding.rest config="Adapters/InitiateBlockchainPayment.wadl"
+                  location="http://managepayment.digitalbank.us/managepayments-api/ddb/"/>
+  </reference>
   <wire>
     <source.uri>EbsPaymentsFtpGetAdapter</source.uri>
     <target.uri>CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter</target.uri>
@@ -81,5 +91,9 @@
   <wire>
     <source.uri>CreateEbsPaymentsRippleABCSImpl/GetOriginatorAccountDetails</source.uri>
     <target.uri>GetOriginatorAccountDetails</target.uri>
+  </wire>
+  <wire>
+    <source.uri>CreateEbsPaymentsRippleABCSImpl/InitiateBlockchainPayment</source.uri>
+    <target.uri>InitiateBlockchainPayment</target.uri>
   </wire>
 </composite>
