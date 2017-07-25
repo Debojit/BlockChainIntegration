@@ -37,7 +37,10 @@
          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
          xmlns:ns11="http://xmlns.oracle.com/pcbpel/adapter/db/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/CreatePaymentRecordDBAdapter"
          xmlns:ns12="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InitiateBlockchainPayment"
-         xmlns:ns9="http://www.deloitte.com/BlockchainIntgration/Payment/MakePayment">
+         xmlns:ns9="http://www.deloitte.com/BlockchainIntgration/Payment/MakePayment"
+         xmlns:ns10="http://xmlns.oracle.com/pcbpel/adapter/db/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InsertXxBlockchainPaymentsDbAdapter"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns13="http://xmlns.oracle.com/pcbpel/adapter/db/top/InsertXxBlockchainPaymentsDbAdapter">
 
   <!-- 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,6 +65,9 @@
                  partnerRole="GetOriginatorAccountDetailsProvider"/>
     <partnerLink name="InitiateBlockchainPayment" partnerLinkType="ns12:InitiateBlockchainPayment"
                  partnerRole="InitiateBlockchainPaymentProvider"/>
+    <partnerLink name="InsertXxBlockchainPaymentsDbAdapter"
+                 partnerLinkType="ns10:InsertXxBlockchainPaymentsDbAdapter_plt"
+                 partnerRole="InsertXxBlockchainPaymentsDbAdapter_role"/>
   </partnerLinks>
   <variables>
     <variable name="gvarSupplierPayments" messageType="ns1:GetPaymentsFile_msg"/>
@@ -225,6 +231,56 @@
             <bpelx:toProperty name="rest.binding.http.Content-Type">'application/json'</bpelx:toProperty>
           </bpelx:toProperties>
         </invoke>
+      </sequence>
+    </scope>
+    <scope name="ScopeInsertPaymentStatus">
+      <variables>
+        <variable name="lvarPaymentStatusInput" messageType="ns10:XxBlockchainPaymentsCollection_msg"/>
+      </variables>
+      <faultHandlers>
+        <catch faultName="bpelx:bindingFault" faultVariable="lvarBindingFault"
+               faultMessageType="bpelx:RuntimeFaultMessage">
+          <exit name="TerminateBindingFault"/>
+        </catch>
+        <catch faultName="bpelx:remoteFault" faultVariable="lvarRemoteFault"
+               faultMessageType="bpelx:RuntimeFaultMessage">
+          <exit name="TerminateRemoteFault"/>
+        </catch>
+        <catchAll>
+          <exit name="TerminateUnhandledError"/>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="SequenceInsertPaymentStatus">
+        <assign name="AssignTransactionDetailsToBlockchainPayments">
+          <copy>
+            <from>ora:getPreference('originatorAccount')</from>
+            <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:accountId</to>
+          </copy>
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:PmtId/ns3:EndToEndId</from>
+            <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:sourcePaymentId</to>
+          </copy>
+          <copy>
+            <from>$gvarPaymentStatus.reply/ns9:key</from>
+            <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:paymentTransactionId</to>
+          </copy>
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:Cdtr/ns3:ContactInfo/ns3:EmailAddress</from>
+            <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:partyEmailId</to>
+          </copy>
+          <copy>
+            <from>'N'</from>
+            <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:ackProcessedFlag</to>
+          </copy>
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:Cdtr/ns3:ContactInfo/ns3:PhoneNumber</from>
+            <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:partyPhoneNo</to>
+          </copy>
+        </assign>
+        <invoke name="InvokeInsertBlockchainPayments" bpelx:invokeAsDetail="no"
+                partnerLink="InsertXxBlockchainPaymentsDbAdapter"
+                portType="ns10:InsertXxBlockchainPaymentsDbAdapter_ptt" operation="insert"
+                inputVariable="lvarPaymentStatusInput"/>
       </sequence>
     </scope>
   </sequence>

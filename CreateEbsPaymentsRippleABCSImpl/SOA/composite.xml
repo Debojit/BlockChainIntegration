@@ -21,6 +21,8 @@
           location="WSDLs/GetOriginatorAccountDetails.wsdl" importType="wsdl"/>
   <import namespace="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InitiateBlockchainPayment"
           location="WSDLs/InitiateBlockchainPayment.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InsertXxBlockchainPaymentsDbAdapter"
+          location="WSDLs/InsertXxBlockchainPaymentsDbAdapter.wsdl" importType="wsdl"/>
   <service name="EbsPaymentsFtpGetAdapter" ui:wsdlLocation="WSDLs/EbsPaymentsFtpGetAdapter.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/ftp/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter#wsdl.interface(GetPaymentsFile_ptt)"/>
     <binding.jca config="Adapters/EbsPaymentsFtpGetAdapter_ftp.jca">
@@ -46,6 +48,10 @@
       </reference>
       <reference name="InitiateBlockchainPayment" ui:wsdlLocation="WSDLs/InitiateBlockchainPayment.wsdl">
         <interface.wsdl interface="http://xmlns.oracle.com/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InitiateBlockchainPayment#wsdl.interface(InitiateBlockchainPayment_ptt)"/>
+      </reference>
+      <reference name="InsertXxBlockchainPaymentsDbAdapter"
+                 ui:wsdlLocation="WSDLs/InsertXxBlockchainPaymentsDbAdapter.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InsertXxBlockchainPaymentsDbAdapter#wsdl.interface(InsertXxBlockchainPaymentsDbAdapter_ptt)"/>
       </reference>
     </componentType>
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
@@ -76,6 +82,15 @@
     <binding.rest config="Adapters/InitiateBlockchainPayment.wadl"
                   location="http://managepayment.digitalbank.us/managepayments-api/ddb/"/>
   </reference>
+  <reference name="InsertXxBlockchainPaymentsDbAdapter"
+             ui:wsdlLocation="WSDLs/InsertXxBlockchainPaymentsDbAdapter.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/BlockChainIntegration/CreateEbsPaymentsRippleABCSImpl/InsertXxBlockchainPaymentsDbAdapter#wsdl.interface(InsertXxBlockchainPaymentsDbAdapter_ptt)"/>
+    <binding.jca config="Adapters/InsertXxBlockchainPaymentsDbAdapter_db.jca"/>
+    <property name="jca.retry.count" type="xs:int" many="false" override="may">4</property>
+    <property name="jca.retry.interval" type="xs:int" many="false" override="may">1</property>
+    <property name="jca.retry.backoff" type="xs:int" many="false" override="may">2</property>
+    <property name="jca.retry.maxInterval" type="xs:int" many="false" override="may">120</property>
+  </reference>
   <wire>
     <source.uri>EbsPaymentsFtpGetAdapter</source.uri>
     <target.uri>CreateEbsPaymentsRippleABCSImpl/EbsPaymentsFtpGetAdapter</target.uri>
@@ -95,5 +110,9 @@
   <wire>
     <source.uri>CreateEbsPaymentsRippleABCSImpl/InitiateBlockchainPayment</source.uri>
     <target.uri>InitiateBlockchainPayment</target.uri>
+  </wire>
+  <wire>
+    <source.uri>CreateEbsPaymentsRippleABCSImpl/InsertXxBlockchainPaymentsDbAdapter</source.uri>
+    <target.uri>InsertXxBlockchainPaymentsDbAdapter</target.uri>
   </wire>
 </composite>
