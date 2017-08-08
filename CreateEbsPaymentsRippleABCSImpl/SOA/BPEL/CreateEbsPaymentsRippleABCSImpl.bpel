@@ -257,6 +257,22 @@
             <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:accountId</to>
           </copy>
           <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:Cdtr/ns3:Id/ns3:OrgId/ns3:Othr/ns3:Id</from>
+            <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:supplierNumber</to>
+          </copy>
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:RmtInf/ns3:Strd/ns3:RfrdDocAmt/ns3:DuePyblAmt</from>
+            <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:paymentAmount</to>
+          </copy>
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:GrpHdr/ns3:CreDtTm</from>
+            <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:erpPaymentDate</to>
+          </copy>
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:Dbtr/ns3:Nm</from>
+            <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:payerCompany</to>
+          </copy>
+          <copy>
             <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:PmtId/ns3:EndToEndId</from>
             <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:sourcePaymentId</to>
           </copy>
@@ -275,6 +291,14 @@
           <copy>
             <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:Cdtr/ns3:ContactInfo/ns3:PhoneNumber</from>
             <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:partyPhoneNo</to>
+          </copy>
+          <copy>
+            <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf/ns3:RmtInf/ns3:Strd/ns3:RfrdDocAmt/ns3:DuePyblAmt/@Ccy</from>
+            <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:currencyCode</to>
+          </copy>
+          <copy>
+            <from>concat($gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:Dbtr/ns3:PstlAdr/ns3:StrtNm, ' ', $gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:Dbtr/ns3:PstlAdr/ns3:TwnNm, ' ', $gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:Dbtr/ns3:PstlAdr/ns3:PstCd, ' ', $gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:Dbtr/ns3:PstlAdr/ns3:CtrySubDvsn, ' ', $gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:Dbtr/ns3:PstlAdr/ns3:Ctry)</from>
+            <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:payerAddress</to>
           </copy>
         </assign>
         <invoke name="InvokeInsertBlockchainPayments" bpelx:invokeAsDetail="no"

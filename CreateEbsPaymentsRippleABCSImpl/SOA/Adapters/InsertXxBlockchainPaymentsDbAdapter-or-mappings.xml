@@ -6,7 +6,8 @@
          <class>InsertXxBlockchainPaymentsDbAdapter.XxBlockchainPayments</class>
          <alias>XX_BLOCKCHAIN_PAYMENTS</alias>
          <primary-key>
-            <field table="XX_BLOCKCHAIN_PAYMENTS" name="PAYMENT_TRANSACTION_ID" xsi:type="column"/>
+            <field table="XX_BLOCKCHAIN_PAYMENTS" name="ACCOUNT_ID" xsi:type="column"/>
+            <field table="XX_BLOCKCHAIN_PAYMENTS" name="SOURCE_PAYMENT_ID" xsi:type="column"/>
          </primary-key>
          <events/>
          <querying>
@@ -53,6 +54,36 @@
             <attribute-mapping xsi:type="direct-mapping">
                <attribute-name>blockchainPaymentStatus</attribute-name>
                <field table="XX_BLOCKCHAIN_PAYMENTS" name="BLOCKCHAIN_PAYMENT_STATUS" xsi:type="column"/>
+               <attribute-classification>java.lang.String</attribute-classification>
+            </attribute-mapping>
+            <attribute-mapping xsi:type="direct-mapping">
+               <attribute-name>supplierNumber</attribute-name>
+               <field table="XX_BLOCKCHAIN_PAYMENTS" name="SUPPLIER_NUMBER" xsi:type="column"/>
+               <attribute-classification>java.lang.String</attribute-classification>
+            </attribute-mapping>
+            <attribute-mapping xsi:type="direct-mapping">
+               <attribute-name>paymentAmount</attribute-name>
+               <field table="XX_BLOCKCHAIN_PAYMENTS" name="PAYMENT_AMOUNT" xsi:type="column"/>
+               <attribute-classification>java.math.BigDecimal</attribute-classification>
+            </attribute-mapping>
+            <attribute-mapping xsi:type="direct-mapping">
+               <attribute-name>erpPaymentDate</attribute-name>
+               <field table="XX_BLOCKCHAIN_PAYMENTS" name="ERP_PAYMENT_DATE" xsi:type="column"/>
+               <attribute-classification>java.sql.Timestamp</attribute-classification>
+            </attribute-mapping>
+            <attribute-mapping xsi:type="direct-mapping">
+               <attribute-name>payerCompany</attribute-name>
+               <field table="XX_BLOCKCHAIN_PAYMENTS" name="PAYER_COMPANY" xsi:type="column"/>
+               <attribute-classification>java.lang.String</attribute-classification>
+            </attribute-mapping>
+            <attribute-mapping xsi:type="direct-mapping">
+               <attribute-name>payerAddress</attribute-name>
+               <field table="XX_BLOCKCHAIN_PAYMENTS" name="PAYER_ADDRESS" xsi:type="column"/>
+               <attribute-classification>java.lang.String</attribute-classification>
+            </attribute-mapping>
+            <attribute-mapping xsi:type="direct-mapping">
+               <attribute-name>currencyCode</attribute-name>
+               <field table="XX_BLOCKCHAIN_PAYMENTS" name="CURRENCY_CODE" xsi:type="column"/>
                <attribute-classification>java.lang.String</attribute-classification>
             </attribute-mapping>
          </attribute-mappings>
