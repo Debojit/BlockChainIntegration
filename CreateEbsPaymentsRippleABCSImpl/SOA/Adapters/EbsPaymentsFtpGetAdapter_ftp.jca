@@ -5,8 +5,8 @@
     <activation-spec className="oracle.tip.adapter.ftp.inbound.FTPActivationSpec">
       <property name="DeleteFile" value="true"/>
       <property name="MinimumAge" value="0"/>
-      <property name="PhysicalDirectory" value="/upload/Blockchain/Payments/data"/>
-      <property name="Recursive" value="true"/>
+      <property name="PhysicalDirectory" value="/upload/Blockchain/Payments"/>
+      <property name="Recursive" value="false"/>
       <property name="PollingFrequency" value="10"/>
       <property name="FileType" value="ascii"/>
       <property name="IncludeFiles" value="BCTEST.*xml"/>

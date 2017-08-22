@@ -6,8 +6,8 @@
          <class>InsertXxBlockchainPaymentsDbAdapter.XxBlockchainPayments</class>
          <alias>XX_BLOCKCHAIN_PAYMENTS</alias>
          <primary-key>
+            <field table="XX_BLOCKCHAIN_PAYMENTS" name="PAYMENT_TRANSACTION_ID" xsi:type="column"/>
             <field table="XX_BLOCKCHAIN_PAYMENTS" name="ACCOUNT_ID" xsi:type="column"/>
-            <field table="XX_BLOCKCHAIN_PAYMENTS" name="SOURCE_PAYMENT_ID" xsi:type="column"/>
          </primary-key>
          <events/>
          <querying>
@@ -84,6 +84,16 @@
             <attribute-mapping xsi:type="direct-mapping">
                <attribute-name>currencyCode</attribute-name>
                <field table="XX_BLOCKCHAIN_PAYMENTS" name="CURRENCY_CODE" xsi:type="column"/>
+               <attribute-classification>java.lang.String</attribute-classification>
+            </attribute-mapping>
+            <attribute-mapping xsi:type="direct-mapping">
+               <attribute-name>supplierName</attribute-name>
+               <field table="XX_BLOCKCHAIN_PAYMENTS" name="SUPPLIER_NAME" xsi:type="column"/>
+               <attribute-classification>java.lang.String</attribute-classification>
+            </attribute-mapping>
+            <attribute-mapping xsi:type="direct-mapping">
+               <attribute-name>supplierSite</attribute-name>
+               <field table="XX_BLOCKCHAIN_PAYMENTS" name="SUPPLIER_SITE" xsi:type="column"/>
                <attribute-classification>java.lang.String</attribute-classification>
             </attribute-mapping>
          </attribute-mappings>

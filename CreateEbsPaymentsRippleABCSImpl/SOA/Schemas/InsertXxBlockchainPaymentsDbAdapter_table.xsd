@@ -11,8 +11,8 @@
          <xs:element name="partyEmailId" type="string500" minOccurs="0" nillable="true"/>
          <xs:element name="partyPhoneNo" type="string500" minOccurs="0" nillable="true"/>
          <xs:element name="accountId" type="string500" nillable="true"/>
-         <xs:element name="paymentTransactionId" type="string500" minOccurs="0" nillable="true"/>
-         <xs:element name="sourcePaymentId" type="string500" nillable="true"/>
+         <xs:element name="paymentTransactionId" type="string500" nillable="true"/>
+         <xs:element name="sourcePaymentId" type="string500" minOccurs="0" nillable="true"/>
          <xs:element name="ackProcessedFlag" type="string1" minOccurs="0" nillable="true"/>
          <xs:element name="blockchainPaymentStatus" type="string50" minOccurs="0" nillable="true"/>
          <xs:element name="supplierNumber" type="string20" minOccurs="0" nillable="true"/>
@@ -21,6 +21,8 @@
          <xs:element name="payerCompany" type="string100" minOccurs="0" nillable="true"/>
          <xs:element name="payerAddress" type="string500" minOccurs="0" nillable="true"/>
          <xs:element name="currencyCode" type="string3" minOccurs="0" nillable="true"/>
+         <xs:element name="supplierName" type="string360" minOccurs="0" nillable="true"/>
+         <xs:element name="supplierSite" type="string360" minOccurs="0" nillable="true"/>
       </xs:sequence>
    </xs:complexType>
    <xs:simpleType name="string500">
@@ -51,6 +53,11 @@
    <xs:simpleType name="string3">
       <xs:restriction base="xs:string">
          <xs:maxLength value="3"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="string360">
+      <xs:restriction base="xs:string">
+         <xs:maxLength value="360"/>
       </xs:restriction>
    </xs:simpleType>
 </xs:schema>

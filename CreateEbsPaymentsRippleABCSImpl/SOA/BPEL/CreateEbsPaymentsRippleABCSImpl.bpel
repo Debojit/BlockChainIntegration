@@ -98,7 +98,7 @@
                      faultMessageType="ns6:getParty_notFoundMessage">
                 <exit name="TerminateInvalidRecipient"/>
               </catch>
-              <catch faultName="ns5:notFound" faultVariable="lvarPartyNotFoundFault"
+              <catch faultName="ns7:accountNotFound" faultVariable="lvarPartyNotFoundFault"
                      faultMessageType="ns5:getParty_notFoundMessage">
                 <exit name="TerminateInvalidOriginator"/>
               </catch>
@@ -306,6 +306,10 @@
                 <copy>
                   <from>concat($gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:Dbtr/ns3:PstlAdr/ns3:StrtNm, ' ', $gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:Dbtr/ns3:PstlAdr/ns3:TwnNm, ' ', $gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:Dbtr/ns3:PstlAdr/ns3:PstCd, ' ', $gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:Dbtr/ns3:PstlAdr/ns3:CtrySubDvsn, ' ', $gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:Dbtr/ns3:PstlAdr/ns3:Ctry)</from>
                   <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:payerAddress</to>
+                </copy>
+                <copy>
+                  <from>$gvarSupplierPayments.body/ns3:CstmrCdtTrfInitn/ns3:PmtInf/ns3:CdtTrfTxInf[$count]/ns3:Cdtr/ns3:Nm</from>
+                  <to>$lvarPaymentStatusInput.XxBlockchainPaymentsCollection/ns13:XxBlockchainPayments/ns13:supplierName</to>
                 </copy>
               </assign>
               <invoke name="InvokeInsertBlockchainPayments" bpelx:invokeAsDetail="no"

@@ -3,11 +3,13 @@
 <properties>
    <entry key="root_descriptor_alias">XX_BLOCKCHAIN_PAYMENTS</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.PAYMENT_TRANSACTION_ID:db_column_size">500</entry>
+   <entry key="XX_BLOCKCHAIN_PAYMENTS.SUPPLIER_SITE:db_column_size">360</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.PAYER_ADDRESS:db_column_type">VARCHAR2</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.SUPPLIER_NUMBER:db_column_not_null">false</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.ACK_PROCESSED_FLAG:db_column_type">VARCHAR2</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.CURRENCY_CODE:db_column_type">VARCHAR2</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.PAYMENT_AMOUNT:db_column_type">NUMBER</entry>
+   <entry key="XX_BLOCKCHAIN_PAYMENTS.SUPPLIER_NAME:db_column_size">360</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.BLOCKCHAIN_PAYMENT_STATUS:db_column_not_null">false</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.SOURCE_PAYMENT_ID:db_column_type">VARCHAR2</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.PARTY_PHONE_NO:db_column_not_null">false</entry>
@@ -20,6 +22,7 @@
    <entry key="XX_BLOCKCHAIN_PAYMENTS.ACK_PROCESSED_FLAG:db_column_size">1</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.CURRENCY_CODE:db_column_size">3</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.SOURCE_PAYMENT_ID:db_column_size">500</entry>
+   <entry key="XX_BLOCKCHAIN_PAYMENTS.SUPPLIER_SITE:db_column_not_null">false</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.ACK_PROCESSED_FLAG:db_column_not_null">false</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.PAYER_COMPANY:db_column_size">100</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.ACCOUNT_ID:db_column_type">VARCHAR2</entry>
@@ -33,6 +36,8 @@
    <entry key="XX_BLOCKCHAIN_PAYMENTS.ERP_PAYMENT_DATE:db_column_not_null">false</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.PAYER_ADDRESS:db_column_not_null">false</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.ERP_PAYMENT_DATE:db_column_type">DATE</entry>
+   <entry key="XX_BLOCKCHAIN_PAYMENTS:db_column_14">SUPPLIER_SITE</entry>
+   <entry key="XX_BLOCKCHAIN_PAYMENTS:db_column_13">SUPPLIER_NAME</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS:db_column_12">CURRENCY_CODE</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS:db_column_11">PAYER_ADDRESS</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS:db_column_10">PAYER_COMPANY</entry>
@@ -53,6 +58,9 @@
    <entry key="XX_BLOCKCHAIN_PAYMENTS:db_column_1">PARTY_PHONE_NO</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS:db_column_0">PARTY_EMAIL_ID</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.PAYMENT_TRANSACTION_ID:db_column_type">VARCHAR2</entry>
+   <entry key="XX_BLOCKCHAIN_PAYMENTS.SUPPLIER_SITE:db_column_type">VARCHAR2</entry>
+   <entry key="XX_BLOCKCHAIN_PAYMENTS.SUPPLIER_NAME:db_column_not_null">false</entry>
+   <entry key="XX_BLOCKCHAIN_PAYMENTS.SUPPLIER_NAME:db_column_type">VARCHAR2</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.PARTY_EMAIL_ID:db_column_size">500</entry>
    <entry key="XX_BLOCKCHAIN_PAYMENTS.BLOCKCHAIN_PAYMENT_STATUS:db_column_size">50</entry>
 </properties>
