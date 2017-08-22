@@ -147,7 +147,7 @@
                         </xsd:sequence>
                       </xsd:complexType>
                     </xsd:element>
-                    <xsd:element name="CdtTrfTxInf">
+                    <xsd:element name="CdtTrfTxInf" maxOccurs="unbounded">
                       <xsd:complexType>
                         <xsd:sequence>
                           <xsd:element name="PmtId">
@@ -302,7 +302,7 @@
                           <xsd:element name="RmtInf">
                             <xsd:complexType>
                               <xsd:sequence>
-                                <xsd:element name="Strd">
+                                <xsd:element name="Strd" maxOccurs="unbounded">
                                   <xsd:complexType>
                                     <xsd:sequence>
                                       <xsd:element name="RfrdDocInf">
